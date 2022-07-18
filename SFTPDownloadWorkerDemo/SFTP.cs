@@ -1,7 +1,11 @@
-﻿namespace App.WindowsService;
+﻿using SFTPDownloadWorkerDemo.Services;
 
-public class JokeService
+namespace SFTPDownloadWorkerDemo;
+
+public class SFTP
 {
+    private readonly ISFTPFileService _sFTPFileService;
+
     public string GetJoke()
     {
         Joke joke = _jokes.ElementAt(

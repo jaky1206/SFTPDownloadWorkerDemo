@@ -1,13 +1,14 @@
-using App.WindowsService;
-
 namespace SFTPDownloadWorkerDemo;
 
 public sealed class WindowsBackgroundService : BackgroundService
 {
-    private readonly JokeService _jokeService;
+    private readonly SFTP _sFTP;
     private readonly ILogger<WindowsBackgroundService> _logger;
 
-    public WindowsBackgroundService(JokeService jokeService, ILogger<WindowsBackgroundService> logger) => (_jokeService, _logger) = (jokeService, logger);
+    public WindowsBackgroundService(SFTP sFTP, ILogger<WindowsBackgroundService> logger)
+    {
+        (_sFTP, _logger) = (sFTP, logger);
+    }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -15,10 +16,10 @@ public sealed class WindowsBackgroundService : BackgroundService
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                string joke = _jokeService.GetJoke();
+                string joke = _sFTP.GetJoke();
                 _logger.LogWarning("{Joke}", joke);
 
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(.1), stoppingToken);
             }
         }
         catch (Exception ex)
