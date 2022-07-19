@@ -10,7 +10,7 @@ namespace SFTPDownloadWorkerDemo.Entities
         public int ID { get; set; }
         public string FileName { get; set; }
         public string FilePath { get; set; }
-        public DateTime DownloadDate { get; set; }
+        public DateTime LastWriteTimeUtc { get; set; }
     }
 }
 

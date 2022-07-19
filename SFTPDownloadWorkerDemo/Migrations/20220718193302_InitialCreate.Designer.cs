@@ -12,7 +12,7 @@ using SFTPDownloadWorkerDemo.Helpers;
 namespace SFTPDownloadWorkerDemo.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220718154631_InitialCreate")]
+    [Migration("20220718193302_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,9 +32,6 @@ namespace SFTPDownloadWorkerDemo.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
-                    b.Property<DateTime>("DownloadDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -42,6 +39,9 @@ namespace SFTPDownloadWorkerDemo.Migrations
                     b.Property<string>("FilePath")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("LastWriteTimeUtc")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("ID");
 

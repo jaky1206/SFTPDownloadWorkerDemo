@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Logging.EventLog;
-
 using SFTPDownloadWorkerDemo;
 
 IHost host = Host.CreateDefaultBuilder(args)
@@ -12,7 +11,6 @@ IHost host = Host.CreateDefaultBuilder(args)
     {
         LoggerProviderOptions.RegisterProviderOptions<EventLogSettings, EventLogLoggerProvider>(services);
 
-        services.AddSingleton<SFTP>();
         services.AddHostedService<WindowsBackgroundService>();
     })
     .ConfigureLogging((context, logging) =>
@@ -21,6 +19,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         logging.AddConfiguration(
             context.Configuration.GetSection("Logging"));
     })
+    //.UseWindowsService()
     .Build();
 
 await host.RunAsync();

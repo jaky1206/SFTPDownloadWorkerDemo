@@ -18,7 +18,7 @@ namespace SFTPDownloadWorkerDemo.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FileName = table.Column<string>(type: "text", nullable: false),
                     FilePath = table.Column<string>(type: "text", nullable: false),
-                    DownloadDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    LastWriteTimeUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
