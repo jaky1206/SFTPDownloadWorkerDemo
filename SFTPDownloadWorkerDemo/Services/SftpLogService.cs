@@ -4,18 +4,7 @@ using SFTPDownloadWorkerDemo.Helpers;
 namespace SFTPDownloadWorkerDemo.Services
 
 {
-    public interface ISFTPFileService
-    {
-        IEnumerable<SftpLog> GetAll();
-        SftpLog GetById(int id);
-        SftpLog GetByFullName(string fullName);
-        bool doesFileExists(string fullName);
-        void Create(SftpLog file);
-        void Update(int id, SftpLog file);
-        void Delete(int id);
-    }
-
-    public class SftpLogService : ISFTPFileService
+    public class SftpLogService : ISftpLogService
     {
         private DataContext _context;
 
@@ -25,7 +14,7 @@ namespace SFTPDownloadWorkerDemo.Services
             _context = context;
         }
         /// <summary>
-        /// Get All Records
+        /// Get All Records from the Database
         /// </summary>
         /// <returns>SftpLog records</returns>
         public IEnumerable<SftpLog> GetAll()
@@ -67,12 +56,6 @@ namespace SFTPDownloadWorkerDemo.Services
         /// <exception cref="AppException"></exception>
         public void Create(SftpLog file)
         {
-            // validate
-            if (_context.SftpLogs.Any(x => x.FullName == file.FullName))
-            {
-                throw new AppException("File already exists");
-            }
-
             // save
             _context.SftpLogs.Add(file);
             _context.SaveChanges();
@@ -86,13 +69,6 @@ namespace SFTPDownloadWorkerDemo.Services
         public void Update(int id, SftpLog file)
         {
             SftpLog _file = GetById(id);
-
-            // validate
-            if (_context.SftpLogs.Any(x => x.FullName == file.FullName))
-            {
-                throw new AppException("File already exists");
-            }
-
             // save
             _context.SftpLogs.Update(file);
             _context.SaveChanges();

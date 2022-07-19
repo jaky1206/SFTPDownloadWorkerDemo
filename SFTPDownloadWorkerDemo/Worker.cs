@@ -11,14 +11,14 @@ public sealed class WindowsBackgroundService : BackgroundService
     private readonly ILogger<WindowsBackgroundService> _logger;
     private readonly IConfiguration _configuration;
     private readonly DataContext _dataContext;
-    private readonly ISFTPFileService _sFTPFileService;
+    private readonly ISftpLogService _sftpLogService;
 
     public WindowsBackgroundService(ILogger<WindowsBackgroundService> logger, IConfiguration configuration)
     {
         _logger = logger;
         _configuration = configuration;
         _dataContext = new DataContext(_configuration);
-        _sFTPFileService = new SftpLogService(_dataContext);
+        _sftpLogService = new SftpLogService(_dataContext);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -35,6 +35,9 @@ public sealed class WindowsBackgroundService : BackgroundService
                 string password = _configuration.GetValue<string>("SFTPConfigurations:password");
                 string remoteDirectory = _configuration.GetValue<string>("SFTPConfigurations:remotedirectory");
                 string localdirectory = _configuration.GetValue<string>("SFTPConfigurations:localdirectory");
+
+                remoteDirectory = String.IsNullOrEmpty(remoteDirectory) ? "/" : remoteDirectory;
+                localdirectory = String.IsNullOrEmpty(localdirectory) || localdirectory == "/" ? "" : localdirectory;
 
                 // Path where the file should be saved once downloaded (locally)
                 string pathLocalDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), localdirectory);
@@ -123,7 +126,7 @@ public sealed class WindowsBackgroundService : BackgroundService
         }
         catch(Exception ex)
         {
-            throw new AppException(ex.Message);
+            _logger.LogError(ex.Message);
         }
     }
 
@@ -139,7 +142,7 @@ public sealed class WindowsBackgroundService : BackgroundService
         {
             using (Stream fileStream = File.OpenWrite(Path.Combine(directory, file.Name)))
             {
-                if (!_sFTPFileService.doesFileExists(file.FullName))
+                if (!_sftpLogService.doesFileExists(file.FullName))
                 {
                     _logger.LogInformation("Downloading {0}", file.FullName);
                     client.DownloadFile(file.FullName, fileStream);
@@ -153,8 +156,9 @@ public sealed class WindowsBackgroundService : BackgroundService
                     sftpLog.LastAccessTimeUtc = file.LastAccessTimeUtc;
                     sftpLog.LastWriteTimeUtc = file.LastWriteTimeUtc;
                     sftpLog.LocalFilePath = directory;
+                    sftpLog.Length = file.Length;
                     _logger.LogInformation("Information on {0} file is being saved to database: ", file.FullName);
-                    _sFTPFileService.Create(sftpLog);
+                    _sftpLogService.Create(sftpLog);
                 }
 
                 else
@@ -165,7 +169,7 @@ public sealed class WindowsBackgroundService : BackgroundService
         }
         catch(Exception ex)
         {
-            throw new AppException(ex.Message);
+            _logger.LogError(ex.Message);
         }
     }
 }
