@@ -18,7 +18,7 @@ namespace SFTPDownloadWorkerDemo.Helpers
             options.UseNpgsql(Configuration.GetConnectionString("ServiceDatabase"));
         }
 
-        public DbSet<SFTPFile> SFTPFiles { get; set; }
+        public DbSet<SftpLog> SftpLogs { get; set; }
     }
 }
 

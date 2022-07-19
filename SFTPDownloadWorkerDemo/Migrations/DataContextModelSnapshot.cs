@@ -22,7 +22,7 @@ namespace SFTPDownloadWorkerDemo.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SFTPDownloadWorkerDemo.Entities.SFTPFile", b =>
+            modelBuilder.Entity("SFTPDownloadWorkerDemo.Entities.SftpLog", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -30,20 +30,36 @@ namespace SFTPDownloadWorkerDemo.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("FileName")
+                    b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("LastAccessTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("LastAccessTimeUtc")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("LastWriteTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("LastWriteTimeUtc")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<long>("Length")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("LocalFilePath")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("ID");
 
-                    b.ToTable("SFTPFiles");
+                    b.ToTable("SftpLogs");
                 });
 #pragma warning restore 612, 618
         }
