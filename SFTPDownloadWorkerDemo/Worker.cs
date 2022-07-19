@@ -1,4 +1,3 @@
-using AutoMapper;
 using Renci.SshNet;
 using Renci.SshNet.Sftp;
 using SFTPDownloadWorkerDemo.Entities;
