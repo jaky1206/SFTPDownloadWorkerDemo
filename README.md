@@ -1,4 +1,5 @@
-> Please disable the antivirus while running this application as antivirus can prevent the application from creating folders 
+> Please disable the antivirus while running this application as antivirus can prevent the application from creating folders.
+> To create a service from executable run sc.exe \\myserver create NewService binpath= c:\windows\system32\NewServ.exe
 
 ## Demo project for SFTP Download using Worker Serive
 ---
