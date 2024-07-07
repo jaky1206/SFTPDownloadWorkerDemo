@@ -1,19 +1,31 @@
-> Please disable the antivirus while running this application as antivirus can prevent the application from creating folders.
-> To create a service from executable run sc.exe \\myserver create NewService binpath= c:\windows\system32\NewServ.exe
-> Please cofigure file paths, database credentials, sftp credentials and preferences in appsettings.json
+# SFTP Downloader Using Worker Service
 
-## Demo project for SFTP Download using Worker Serive
----
+## Overview
+This demo project showcases a backend service using .NET Core 6 for downloading files from an SFTP server using a worker service.
 
-**Backend service using .Net core 6. The Service includes:**
-- Every 1 minute service connects to sftp and checks if there are new files.
-- Sftp server, file paths etc. are configurable (not in code). 
-- Service downloads all the new files to local path.
-- All downloaded files (paths) are stored in database (postgresql).
-- Files from sftp are never deleted, so checking if file is new or old is done by checking it in database taken in consideration file creation time.
-- Working with database is done by Entity framework
-- Database is defined by code first principle.
-- Service is resilient: handle connection problems etc. and should not "die".
-- Code have comments explaining what it does.
-- Service have sane logging, configurable tracing (it should be clear what is happening from logs).
-- Service uses dependency injection
+## Requirements
+- **Automated File Download**: The service connects to the SFTP server every minute to check for new files and downloads them to a local path.
+- **Configuration**: SFTP server details and file paths are configurable outside of the code.
+- **Database Integration**: Downloaded file paths are stored in a PostgreSQL database.
+- **Resilience**: The service is designed to handle connection issues and continue operating without crashing.
+- **Code Comments**: The codebase includes comments explaining the functionality.
+- **Logging**: Includes configurable logging and tracing for monitoring service activities.
+- **Dependency Injection**: Utilizes dependency injection for better code management.
+
+## Setup
+1. Disable antivirus software to prevent issues with folder creation.
+2. To create a service from the executable, run: sc.exe \myserver create NewService binpath= c:\windows\system32\NewServ.exe
+3. Configure file paths, database credentials, SFTP credentials, and preferences in `appsettings.json`.
+
+## Database
+- The database schema is defined using the code-first principle with Entity Framework.
+
+## Logging
+- The service includes logging with configurable tracing levels.
+
+## Disclaimer
+Please ensure to configure the service correctly and handle any security implications when disabling antivirus software.
+
+## About
+This project demonstrates the use of a worker service in .NET Core 6 for SFTP file downloading, PostgreSQL database, database integration using Entity Framework , and service resilience.
+
